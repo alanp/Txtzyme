@@ -240,18 +240,11 @@ void parse(const char *buf) {
 					SPSR = 0;
 					break;
 				}
-				if (x > 255) {						//this can catch 256+data and 0x100+data
-					if ( !(SPCR & SPE)) break;		//make sure SPI is enabled
-					x = x & 0x00FF;
-					SPDR = (int8_t)x;				//send data out SPI
-					while (!(SPSR & (1<<SPIF)));	//wait for it to go out
-					x = SPDR;						//put returned data in x
-					break;
-				}
 				if (x < 256) {
 					if ( !(SPCR & SPE)) break;		//make sure SPI is enabled
 					SPDR = (int8_t)x;				//send data out SPI
 					while (!(SPSR & (1<<SPIF)));	//wait for it to go out
+					x = SPDR;						//put returned data in x
 					break;
 				}
 		}
